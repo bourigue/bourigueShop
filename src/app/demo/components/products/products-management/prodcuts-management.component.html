@@ -1,6 +1,7 @@
 <div class="grid ">
 
     <div class="col-12">
+        <p-toast></p-toast>
         <div class="card px-6 py-6">
             <p-toolbar  styleClass="mb-4" >
                 <div class="p-toolbar-group-start">
@@ -106,7 +107,7 @@
                 </ng-template>
             </p-table>
 
-            <p-dialog [(visible)]="productDialog"  class="p-fluid"  [style]="{width: '400px'}" header="Details Product" [modal]="true" >
+            <p-dialog [(visible)]="productDialog"  class="p-fluid"  [style]="{width: '500px'}" header="Details Product" [modal]="true" >
               <ng-template pTemplate="content">
 
                   <div class="field  ">
@@ -122,8 +123,8 @@
                   <div class="grid">
                   <div class="field col-6 ">
                       <label for="price">Category</label>
-                      <p-dropdown [panelStyleClass]="'dropdown-panel-top'" [options]="categorys" [(ngModel)]="product.category" optionLabel="name"></p-dropdown>
-                      <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">Price is required.</small>
+                      <p-dropdown [panelStyleClass]="'dropdown-panel-top'" [options]="categorys" [(ngModel)]="product.category" optionValue="name" optionLabel="name"></p-dropdown>
+                      <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.category">Price is required.</small>
                   </div>
                   <div class="field col-6  ">
                       <label for="price">Price</label>
@@ -138,7 +139,7 @@
                   </div>
                   <div class="field">
                       <label >Image</label>
-                      <p-fileUpload   [(ngModel)]="product.image"></p-fileUpload>
+                      <p-fileUpload class="w-full" [multiple]="false"  customUpload="true" (uploadHandler)="uploadImage($event)" ></p-fileUpload>
 
                   </div>
 

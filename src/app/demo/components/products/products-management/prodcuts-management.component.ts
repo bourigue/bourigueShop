@@ -6,26 +6,19 @@ import {Table} from "primeng/table";
 import {Categrory} from "../../../models/Category";
 
 
-interface City {
-    name: string;
-    code: string;
-}
 
 @Component({
   selector: 'app-prodcuts-management',
   templateUrl: './prodcuts-management.component.html',
-  styleUrls: ['./prodcuts-management.component.scss']
+  styleUrls: ['./prodcuts-management.component.scss','./styles.css']
 })
 export class ProdcutsManagementComponent implements OnInit {
-    selectedCity: City | undefined;
-
     products: Product[] = [];
     productDialog: boolean = false;
     loading: boolean = true;
     submitted: boolean = false;
     product: Product = {};
     categorys: Categrory[] = [];
-    cities: City[] | [];
 
     constructor(private productService: ProductsManagementService, private messageService: MessageService) {
     }
@@ -54,12 +47,13 @@ export class ProdcutsManagementComponent implements OnInit {
     }
 
     saveProduct() {
+        console.log(this.product.image);
+        /*
         this.submitted = true;
        console.log(this.product.name);
-       if (this.product.name!=null||this.product.description!=null
-           ||this.product.image!=null||this.product.quantity!=0||this.product.price!=0) {
+       if (this. isProductFilled()) {
             if (this.product.id) {
-          /*       // @ts-ignore
+                // @ts-ignore
                 this.productService.updateProduct(this.product);
                 this.products[this.findIndexById(this.product.id)] = this.product;
                 this.messageService.add({
@@ -67,13 +61,13 @@ export class ProdcutsManagementComponent implements OnInit {
                     summary: 'Successful',
                     detail: 'Product Updated',
                     life: 3000
-                });*/
+                });
             } else {
                  // this.product.id = this.createId();
                  //this.product.code = this.createId();
-                this.product.image = 'product-placeholder.svg';
+                //this.product.image = 'product-placeholder.svg';
                 //this.product.inventoryStatus = this.product.inventoryStatus ? this.product.inventoryStatus.value : 'INSTOCK';
-                this.products.push(this.product);
+                this.productService.addProduct(this.product);
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Successful',
@@ -85,7 +79,7 @@ export class ProdcutsManagementComponent implements OnInit {
             this.products = [...this.products];
             this.productDialog = false;
             this.product = {};
-        }
+        }*/
     }
 
     hideDialog() {
@@ -103,5 +97,35 @@ export class ProdcutsManagementComponent implements OnInit {
         }
 
         return index;
+    }
+    isProductFilled(): boolean {
+
+        console.log(this.product.category);
+
+
+        return !!(
+            this.product.name?.trim() &&
+            this.product.description?.trim()&&
+            this.product.category?.trim()&&
+            this.product.image?.trim()&&
+            this.product.price &&
+            this.product.quantity
+        );
+    }
+    async uploadImage(event: any) {
+
+        const file = event.files[0];
+        const filePath = `productImage/${file.name}`;
+        console.log(file);
+        console.log(filePath);
+        const url = this.productService.UploadToFireStorage(filePath, file);
+        try {
+            this.product.image= await this.productService.UploadToFireStorage(filePath, file);
+            console.log('Download URL:', this.product.image);
+        } catch (error) {
+            console.error('Upload error:', error);
+        }
+
+
     }
 }
