@@ -17,11 +17,28 @@ export class ProductsManagementService implements ProductsManagement{
     addProduct(product:Product) {
 
         this.firestore.collection("products").
-        add(product).then(e=>{console.log("Product was added")}).catch(error=>console.log(error));
+        add(product).then((ref)=>{
+            console.log("Product was added");
+            this.firestore.collection("products").doc(ref.id).update({ id: ref.id })
+        }).catch(error=>console.log(error));
 
     }
 
     deleteProduct(product:Product) {
+
+         this.firestorage.refFromURL(product.image).delete().subscribe(
+             value => {
+                 console.log("the image was deleted "+value);
+                 this.firestore.collection("products").doc(product.id).delete().then(value=>{
+                     console.log("the product was deleted "+value);
+
+                 });
+             },
+             error=>{
+                 console.log("the image not deleted "+error)
+             }
+         );
+
 
         }
 

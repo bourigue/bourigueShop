@@ -19,6 +19,7 @@ import {DropdownModule} from "primeng/dropdown";
 import {PaginatorModule} from "primeng/paginator";
 import {FileUploadModule} from "primeng/fileupload";
 import {ToastModule} from "primeng/toast";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import {ToastModule} from "primeng/toast";
         PaginatorModule,
         FileUploadModule,
         ToastModule,
+        ProgressSpinnerModule,
 
     ]
     ,

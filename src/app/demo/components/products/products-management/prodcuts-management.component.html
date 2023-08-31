@@ -43,6 +43,8 @@
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Manage Products</h5>
+                        <p-progressSpinner *ngIf="isEnd" styleClass="w-4rem h-4rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText (input)="onGlobalFilter(dt, $event)"  type="text"  placeholder="Search..."  class="w-full sm:w-auto"/>
@@ -83,7 +85,7 @@
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product)"  ></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" ></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
                             </div>
                         </td>
                     </tr>
@@ -108,8 +110,13 @@
             </p-table>
 
             <p-dialog [(visible)]="productDialog"  class="p-fluid"  [style]="{width: '500px'}" header="Details Product" [modal]="true" >
-              <ng-template pTemplate="content">
 
+                    <p-progressSpinner *ngIf="isEnd" styleClass="w-4rem h-4rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+
+                <ng-template pTemplate="content">
+                  <div class="field " *ngIf="product.image">
+                  <img [src]=" product.image" [alt]="product.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="product.image">
+                  </div>
                   <div class="field  ">
                       <label for="name">Name</label>
                       <input type="text" pInputText id="name" class="w-full"  [(ngModel)]="product.name" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
@@ -123,7 +130,15 @@
                   <div class="grid">
                   <div class="field col-6 ">
                       <label for="price">Category</label>
-                      <p-dropdown [panelStyleClass]="'dropdown-panel-top'" [options]="categorys" [(ngModel)]="product.category" optionValue="name" optionLabel="name"></p-dropdown>
+                      <p-dropdown [panelStyleClass]="'dropdown-panel-top'" [options]="categorys" [(ngModel)]="product.category" optionValue="name" optionLabel="name">
+
+                          <ng-template pTemplate="selectedItem">
+                              <span *ngIf="product && product.category" [class]="'product-badge' + product.category.toString().toLowerCase()">{{product.category}}</span>
+                          </ng-template>
+                          <ng-template let-option pTemplate="item">
+                              <span [class]="'product-badge ' + option.name">{{option.name}}</span>
+                          </ng-template>
+                      </p-dropdown>
                       <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.category">Price is required.</small>
                   </div>
                   <div class="field col-6  ">
@@ -137,10 +152,9 @@
                       <input type="text" pInputText id="quantity" class="w-full"  [(ngModel)]="product.quantity" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.quantity}"/>
                       <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.quantity">Quantity is required.</small>
                   </div>
-                  <div class="field">
+                  <div class="field" *ngIf="!product.image" >
                       <label >Image</label>
                       <p-fileUpload class="w-full" [multiple]="false"  customUpload="true" (uploadHandler)="uploadImage($event)" ></p-fileUpload>
-
                   </div>
 
 

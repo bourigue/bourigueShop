@@ -17,6 +17,7 @@ export class ProdcutsManagementComponent implements OnInit {
     productDialog: boolean = false;
     loading: boolean = true;
     submitted: boolean = false;
+    isEnd:boolean=false;
     product: Product = {};
     categorys: Categrory[] = [];
 
@@ -38,22 +39,26 @@ export class ProdcutsManagementComponent implements OnInit {
     }
 
     openNew() {
+        this.clearProduct();
         this.productDialog = !this.productDialog;
     }
+    deleteProduct(product:Product){
 
+        this.productService.deleteProduct(product);
+    }
     editProduct(product: Product) {
         this.product = {...product};
         this.productDialog = true;
     }
 
     saveProduct() {
+        this.isEnd=true;
         console.log(this.product.image);
-        /*
+
         this.submitted = true;
        console.log(this.product.name);
        if (this. isProductFilled()) {
             if (this.product.id) {
-                // @ts-ignore
                 this.productService.updateProduct(this.product);
                 this.products[this.findIndexById(this.product.id)] = this.product;
                 this.messageService.add({
@@ -79,7 +84,8 @@ export class ProdcutsManagementComponent implements OnInit {
             this.products = [...this.products];
             this.productDialog = false;
             this.product = {};
-        }*/
+            this.isEnd=false;
+        }
     }
 
     hideDialog() {
@@ -128,4 +134,12 @@ export class ProdcutsManagementComponent implements OnInit {
 
 
     }
+
+
+    clearProduct(){
+        this.product={};
+    }
+
+
+
 }
