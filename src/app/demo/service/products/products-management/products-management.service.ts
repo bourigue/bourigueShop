@@ -26,20 +26,23 @@ export class ProductsManagementService implements ProductsManagement{
 
     deleteProduct(product:Product) {
 
-         this.firestorage.refFromURL(product.image).delete().subscribe(
-             value => {
-                 console.log("the image was deleted "+value);
-                 this.firestore.collection("products").doc(product.id).delete().then(value=>{
-                     console.log("the product was deleted "+value);
+        return new Promise<any>((resolve,reject)=>{
 
-                 });
-             },
-             error=>{
-                 console.log("the image not deleted "+error)
-             }
-         );
-
-
+            this.firestorage.refFromURL(product.image).delete().subscribe(
+                value => {
+                    console.log("the image was deleted "+value);
+                    this.firestore.collection("products").doc(product.id).delete().then(value=>{
+                        console.log("the product was deleted "+value);
+                        resolve(value);
+                    });
+                },
+                error=>{
+                    reject(error);
+                    console.log("the image not deleted "+error)
+                }
+            );
+            }
+        );
         }
 
 

@@ -44,7 +44,7 @@ export class AuthenticationServiceService {
             console.error(error);
         }
     }
-    getUserEmail():any {
+  getUserEmail():any {
         this.auth.user.subscribe((user: User | null) => {
             if (user) {
                 const email = user.email;
@@ -55,5 +55,8 @@ export class AuthenticationServiceService {
                return false;
             }
         });
+    }
+  isOnline(): boolean {
+        return navigator.onLine;
     }
 }

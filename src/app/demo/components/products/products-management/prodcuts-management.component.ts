@@ -4,6 +4,7 @@ import {ProductsManagementService} from "../../../service/products/products-mana
 import {MessageService} from "primeng/api";
 import {Table} from "primeng/table";
 import {Categrory} from "../../../models/Category";
+import {AuthenticationServiceService} from "../../../service/authentication/authentication-service.service";
 
 
 
@@ -17,11 +18,12 @@ export class ProdcutsManagementComponent implements OnInit {
     productDialog: boolean = false;
     loading: boolean = true;
     submitted: boolean = false;
-    isEnd:boolean=false;
+    isProgress:boolean=false;
+    deleteProdateDialog=false;
     product: Product = {};
     categorys: Categrory[] = [];
 
-    constructor(private productService: ProductsManagementService, private messageService: MessageService) {
+    constructor(private productService: ProductsManagementService, private messageService: MessageService,private auth:AuthenticationServiceService) {
     }
 
     ngOnInit(): void {
@@ -42,9 +44,17 @@ export class ProdcutsManagementComponent implements OnInit {
         this.clearProduct();
         this.productDialog = !this.productDialog;
     }
-    deleteProduct(product:Product){
+    deleteProduct(){
+        this.isProgress=true;
+        this.productService.deleteProduct(this.product).then(value=>{
+            this.isProgress=false;
+            this.deleteProdateDialog=false;
+        }).catch(error=>{
+            this.isProgress=false;
+            this.deleteProdateDialog=false;
+        });
+        this.clearProduct();
 
-        this.productService.deleteProduct(product);
     }
     editProduct(product: Product) {
         this.product = {...product};
@@ -52,7 +62,7 @@ export class ProdcutsManagementComponent implements OnInit {
     }
 
     saveProduct() {
-        this.isEnd=true;
+        this.isProgress=true;
         console.log(this.product.image);
 
         this.submitted = true;
@@ -84,7 +94,7 @@ export class ProdcutsManagementComponent implements OnInit {
             this.products = [...this.products];
             this.productDialog = false;
             this.product = {};
-            this.isEnd=false;
+            this.isProgress=false;
         }
     }
 
@@ -139,7 +149,13 @@ export class ProdcutsManagementComponent implements OnInit {
     clearProduct(){
         this.product={};
     }
-
-
+    confirmDeleteProduct(product:Product){
+        this.clearProduct();
+        this.product=product;
+        this.deleteProdateDialog=true;
+    }
+    checkInternetConnection(){
+        return this.auth.isOnline();
+    }
 
 }

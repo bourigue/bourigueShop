@@ -1,6 +1,6 @@
 <div class="grid ">
 
-    <div class="col-12">
+      <div class="col-12" *ngIf="checkInternetConnection(); else offlineMessage">
         <p-toast></p-toast>
         <div class="card px-6 py-6">
             <p-toolbar  styleClass="mb-4" >
@@ -43,7 +43,6 @@
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Manage Products</h5>
-                        <p-progressSpinner *ngIf="isEnd" styleClass="w-4rem h-4rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
 
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
@@ -85,7 +84,8 @@
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product)"  ></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDeleteProduct(product)">
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -111,7 +111,6 @@
 
             <p-dialog [(visible)]="productDialog"  class="p-fluid"  [style]="{width: '500px'}" header="Details Product" [modal]="true" >
 
-                    <p-progressSpinner *ngIf="isEnd" styleClass="w-4rem h-4rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
 
                 <ng-template pTemplate="content">
                   <div class="field " *ngIf="product.image">
@@ -166,6 +165,27 @@
                 </ng-template>
 
             </p-dialog>
+
+            <p-dialog [(visible)]="deleteProdateDialog" header="Confirmation" modal="true" >
+                <ng-template pTemplate="content">
+                    <div class="flex align-items-center justify-content-center">
+                        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                        <span *ngIf="product">Are you sure you want to delete <b>{{product.name}}</b>?</span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <p-button label="No"  icon="pi pi-times" class="p-button-text" (click)="deleteProdateDialog=false"></p-button>
+                    <p-button label="Yes"  icon="pi pi-check" class="p-button-text" (click)="deleteProduct()" >
+                        <p-progressSpinner *ngIf="isProgress" styleClass="w-2rem 2-4rem" strokeWidth="5" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner> </p-button>
+                </ng-template>
+
+            </p-dialog>
+
         </div>
     </div>
+    <ng-template #offlineMessage>
+        No connection brothere
+        <img [src]="'assets/demo/images/icon/noInternet.mp4'"  width="150" class="mt-0 mx-auto mb-5 block shadow-2" >
+
+    </ng-template>
 </div>

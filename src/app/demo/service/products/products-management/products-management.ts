@@ -6,7 +6,7 @@ export interface ProductsManagement {
     getAllProduct():Observable<Product[]>;
     addProduct(product:Product);
     updateProduct(product:Product);
-    deleteProduct(product:Product);
+    deleteProduct(product:Product):Promise<any>;
     getProductById();
     UploadToFireStorage(pathName:string,file:File):any;
 
