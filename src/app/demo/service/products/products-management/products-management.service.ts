@@ -92,6 +92,18 @@ export class ProductsManagementService implements ProductsManagement{
         });
     }
 
+    deleteAllSelectedProduct(products: Product[]): Promise<any> {
+        return new Promise((resolve,reject)=>{
+            products.forEach(product=>{
+                this.deleteProduct(product).then(value=>{
+                    resolve(value);
+                }).catch(error=>{
+                    reject(error);
+                });
+            });
+        });
+    }
+
 
 
 

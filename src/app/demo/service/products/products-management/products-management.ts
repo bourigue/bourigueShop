@@ -9,5 +9,7 @@ export interface ProductsManagement {
     deleteProduct(product:Product):Promise<any>;
     getProductById();
     UploadToFireStorage(pathName:string,file:File):any;
+    deleteAllSelectedProduct(products:Product[]):Promise<any>;
+
 
 }

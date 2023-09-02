@@ -20,7 +20,7 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Dashboard',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
+                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/admin'] },
 
                 ]
             },
@@ -32,7 +32,7 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Prodcut Management',
                         icon: 'pi pi-fw pi-shopping-cart',
-                        routerLink: ['product/productManagement']
+                        routerLink: ['/admin/product/productManagement']
                     },
 
                 ]
@@ -45,7 +45,7 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Orders Management',
                         icon: 'pi pi-fw pi-list',
-                        routerLink: ['/']
+                        routerLink: ['/admin']
                     },
 
                 ]

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 import {Product} from "../../../models/product";
 import {ProductsManagementService} from "../../../service/products/products-management/products-management.service";
 import {MessageService} from "primeng/api";
@@ -15,15 +15,19 @@ import {AuthenticationServiceService} from "../../../service/authentication/auth
 })
 export class ProdcutsManagementComponent implements OnInit {
     products: Product[] = [];
+    selectedProducts:Product[]=[];
     productDialog: boolean = false;
     loading: boolean = true;
     submitted: boolean = false;
     isProgress:boolean=false;
     deleteProdateDialog=false;
+    deleteSelecteProductConfirm=false;
+
     product: Product = {};
     categorys: Categrory[] = [];
+    lottieOptions: any;
 
-    constructor(private productService: ProductsManagementService, private messageService: MessageService,private auth:AuthenticationServiceService) {
+    constructor(private ngZone: NgZone,private productService: ProductsManagementService, private messageService: MessageService,private auth:AuthenticationServiceService) {
     }
 
     ngOnInit(): void {
@@ -34,6 +38,12 @@ export class ProdcutsManagementComponent implements OnInit {
             }, 1000);
         });
         this.categorys = [{name: "Clothing"}, {name: "Jewelry & Watches"}, {name: "Fashion Accessories"}, {name: "Health & Beauty "}, {name: "Shoes"}]
+        this.lottieOptions = {
+            path: 'assets/demo/images/icon/data.json', // Replace with the path to your JSON data
+            renderer: 'svg', // You can use 'canvas' or 'svg' as the renderer
+            autoplay: true,
+            loop: true,
+        };
     }
 
     onGlobalFilter(table: Table, event: Event) {
@@ -46,12 +56,31 @@ export class ProdcutsManagementComponent implements OnInit {
     }
     deleteProduct(){
         this.isProgress=true;
+      /*  setTimeout(() => {
+            // Code to execute after 1 second
+            this.ngZone.run(() => {
+                // Put your code here
+                this.deleteProdateDialog=false;
+            });
+        }, 10000);*/
+        this.product={};
         this.productService.deleteProduct(this.product).then(value=>{
             this.isProgress=false;
-            this.deleteProdateDialog=false;
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'Product deleted',
+                life: 3000
+            });
         }).catch(error=>{
             this.isProgress=false;
             this.deleteProdateDialog=false;
+            this.messageService.add({
+                severity: 'error',
+                summary: 'error',
+                detail: 'Product not deleted',
+                life: 3000
+            });
         });
         this.clearProduct();
 
@@ -128,10 +157,18 @@ export class ProdcutsManagementComponent implements OnInit {
             this.product.quantity
         );
     }
+    createId(): string {
+        let id = '';
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for (let i = 0; i < 5; i++) {
+            id += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return id;
+    }
     async uploadImage(event: any) {
 
         const file = event.files[0];
-        const filePath = `productImage/${file.name}`;
+        const filePath = `productImage/${file.name+ this.createId()}`;
         console.log(file);
         console.log(filePath);
         const url = this.productService.UploadToFireStorage(filePath, file);
@@ -153,6 +190,40 @@ export class ProdcutsManagementComponent implements OnInit {
         this.clearProduct();
         this.product=product;
         this.deleteProdateDialog=true;
+    }
+    confirmDeleteSelectedProducts(){
+        this.deleteSelecteProductConfirm=true;
+    }
+    cancelConfirmDeleteSelectedProducts(){
+        this.deleteSelecteProductConfirm=false;
+    }
+    deleteAllSelectedProdcut(){
+
+        this.isProgress=true;
+        this.productService.deleteAllSelectedProduct(this.selectedProducts).
+            then(value=>{
+                this.isProgress=false;
+            this.deleteSelecteProductConfirm=false;
+
+            this.messageService.add({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'All Product selected was deleted',
+                    life: 3000
+                });
+            }).catch(error=>{
+            this.isProgress=false;
+            this.deleteSelecteProductConfirm=false;
+
+            this.messageService.add({
+                severity: 'error',
+                summary: 'error',
+                detail: 'Product not deleted',
+                life: 3000
+            });
+        });
+
+
     }
     checkInternetConnection(){
         return this.auth.isOnline();
