@@ -12,7 +12,7 @@ const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['/auth/access'
 @NgModule({
     imports: [
         RouterModule.forRoot([
-            {path: '', component: AppLayoutComponent,
+            {path: 'admin', component: AppLayoutComponent,
             children:[
                 {path:'product',
                     loadChildren: () => import('./demo/components/products/product.module').then(m=>m.ProductModule),
@@ -20,7 +20,7 @@ const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['/auth/access'
                 },
             ]
             },
-
+            {path:'',loadChildren:()=>import("./demo/components/landing-page/landing-page.module").then(m=>m.LandingPageModule)},
             { path: '**', redirectTo: '/notfound' },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })

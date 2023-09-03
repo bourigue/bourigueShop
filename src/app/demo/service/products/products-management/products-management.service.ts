@@ -2,24 +2,47 @@ import { Injectable } from '@angular/core';
 import {ProductsManagement} from "./products-management";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Product} from "../../../models/product";
-import {catchError, Observable} from "rxjs";
+import {catchError, finalize, Observable} from "rxjs";
 import {error} from "@angular/compiler-cli/src/transformers/util";
+import {AngularFireStorage} from "@angular/fire/compat/storage";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsManagementService implements ProductsManagement{
 
-  constructor(private  firestore: AngularFirestore) { }
+
+  constructor(private  firestore: AngularFirestore,private firestorage:AngularFireStorage) { }
 
     addProduct(product:Product) {
+
         this.firestore.collection("products").
-        add(product).then(e=>{console.log("Product was added")}).catch(error=>console.log(error));
+        add(product).then((ref)=>{
+            console.log("Product was added");
+            this.firestore.collection("products").doc(ref.id).update({ id: ref.id })
+        }).catch(error=>console.log(error));
 
     }
 
     deleteProduct(product:Product) {
 
+        return new Promise<any>((resolve,reject)=>{
+
+            this.firestorage.refFromURL(product.image).delete().subscribe(
+                value => {
+                    console.log("the image was deleted "+value);
+                    this.firestore.collection("products").doc(product.id).delete().then(value=>{
+                        console.log("the product was deleted "+value);
+                        resolve(value);
+                    });
+                },
+                error=>{
+                    reject(error);
+                    console.log("the image not deleted "+error)
+                }
+            );
+            }
+        );
         }
 
 
@@ -46,5 +69,42 @@ export class ProductsManagementService implements ProductsManagement{
 
 
     }
+
+    UploadToFireStorage(filePath: string, file: File): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            const fileRef = this.firestorage.ref(filePath);
+            const uploadTask = this.firestorage.upload(filePath, file);
+
+            uploadTask.snapshotChanges().pipe(
+                finalize(() => {
+                    fileRef.getDownloadURL().subscribe(
+                        downloadURL => {
+                            console.log('File available at', downloadURL);
+                            resolve(downloadURL);
+                        },
+                        error => {
+                            console.error('Error getting download URL:', error);
+                            reject(error);
+                        }
+                    );
+                })
+            ).subscribe();
+        });
+    }
+
+    deleteAllSelectedProduct(products: Product[]): Promise<any> {
+        return new Promise((resolve,reject)=>{
+            products.forEach(product=>{
+                this.deleteProduct(product).then(value=>{
+                    resolve(value);
+                }).catch(error=>{
+                    reject(error);
+                });
+            });
+        });
+    }
+
+
+
 
 }

@@ -18,6 +18,9 @@ import {PanelModule} from "primeng/panel";
 import {DropdownModule} from "primeng/dropdown";
 import {PaginatorModule} from "primeng/paginator";
 import {FileUploadModule} from "primeng/fileupload";
+import {ToastModule} from "primeng/toast";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {LottieComponent} from "ngx-lottie";
 
 
 @NgModule({
@@ -42,6 +45,9 @@ import {FileUploadModule} from "primeng/fileupload";
         DropdownModule,
         PaginatorModule,
         FileUploadModule,
+        ToastModule,
+        ProgressSpinnerModule,
+        LottieComponent,
 
     ]
     ,

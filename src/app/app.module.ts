@@ -7,12 +7,26 @@ import {AngularFireModule} from "@angular/fire/compat";
 
 import {MenuModule} from "primeng/menu";
  // Make sure this path is correct
-
-
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+import { LandingPageComponent } from './demo/components/landing-page/landing-page.component';
+import {RippleModule} from "primeng/ripple";
+import {StyleClassModule} from "primeng/styleclass";
+import {DividerModule} from "primeng/divider";
+import {ButtonModule} from "primeng/button";
+import {DataViewModule} from "primeng/dataview";
+import {DropdownModule} from "primeng/dropdown";
+import {FormsModule} from "@angular/forms";
+import {RatingModule} from "primeng/rating";
+import {ChipsModule} from "primeng/chips";
+export function playerFactory() {
+    return player;
+}
 // @ts-ignore
 @NgModule({
     declarations: [
         AppComponent,
+        LandingPageComponent,
 
     ],
     imports: [
@@ -27,7 +41,18 @@ import {MenuModule} from "primeng/menu";
             appId: "1:976276558673:web:4ea9d0e76ddd049a853970",
             measurementId: "G-X6R047FQ4G"
         }),
-        MenuModule
+        MenuModule,
+        LottieModule.forRoot({player: playerFactory}),
+        RippleModule,
+        StyleClassModule,
+        DividerModule,
+        ButtonModule,
+        DataViewModule,
+        DropdownModule,
+        FormsModule,
+        RatingModule,
+        ChipsModule,
+
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
