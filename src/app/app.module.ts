@@ -14,6 +14,11 @@ import {RippleModule} from "primeng/ripple";
 import {StyleClassModule} from "primeng/styleclass";
 import {DividerModule} from "primeng/divider";
 import {ButtonModule} from "primeng/button";
+import {DataViewModule} from "primeng/dataview";
+import {DropdownModule} from "primeng/dropdown";
+import {FormsModule} from "@angular/forms";
+import {RatingModule} from "primeng/rating";
+import {ChipsModule} from "primeng/chips";
 export function playerFactory() {
     return player;
 }
@@ -42,6 +47,11 @@ export function playerFactory() {
         StyleClassModule,
         DividerModule,
         ButtonModule,
+        DataViewModule,
+        DropdownModule,
+        FormsModule,
+        RatingModule,
+        ChipsModule,
 
     ],
     providers: [
