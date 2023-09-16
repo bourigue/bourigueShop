@@ -13,12 +13,5 @@ export class AppComponent implements OnInit {
     ngOnInit() {
         this.primengConfig.ripple = true;
     }
-    async signInWithEmail() {
-        try {
-            const { user } = await this.auth.signInWithEmailAndPassword('email@example.com', 'password');
-            console.log('Signed in with email:', user);
-        } catch (error) {
-            console.error('Email sign-in error:', error);
-        }
-    }
+
 }

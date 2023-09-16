@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import {ProductsManagement} from "./products-management";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Product} from "../../../models/product";
-import {catchError, finalize, Observable} from "rxjs";
-import {error} from "@angular/compiler-cli/src/transformers/util";
+import {catchError, finalize, from, Observable, throwError} from "rxjs";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -46,26 +46,41 @@ export class ProductsManagementService implements ProductsManagement{
         }
 
 
-    getAllProduct() :Observable<Product[]>{
-       return  this.firestore.collection<Product>('products').valueChanges().pipe(
-           catchError(error => {
-               console.error('Error fetching products:', error);
-               return []; // Return an empty array as a default value
-           })
-       );
+    getAllProduct(): Observable<Product[]> {
+        return this.firestore.collection<Product>('products').valueChanges().pipe(
+            catchError(error => {
+                console.error('Error fetching products:', error);
+                return []; // Return an empty array as a default value
+            })
+        );
     }
 
-    getProductById() {
+    getProductById(id: string): Observable<Product> {
+        return from(this.firestore.collection<Product>('products').doc(id).get()).pipe(
+            map(doc => {
+                if (doc.exists) {
+                    return doc.data() as Product;
+                } else {
+                    return new Error('Product not found');
+                }
+            }),
+            catchError(error => {
+                // Handle any errors that occurred during the Firestore operation
+                return throwError(error);
+            })
+        );
     }
 
     updateProduct(product: Product) {
-      const productId=product.id;
-      if(!productId){
-          console.log("The Id of the product does' not exist");
-      }else {
-          const productRef=this.firestore.collection("products").doc(productId)
-          productRef.update(product).then(e=>console.log("the product was addded")).catch(error=>{console.log("error whene update the product",error)});
-      }
+        const productId = product.id;
+        if (!productId) {
+            console.log("The Id of the product does' not exist");
+        } else {
+            const productRef = this.firestore.collection("products").doc(productId)
+            productRef.update(product).then(e => console.log("the product was addded")).catch(error => {
+                console.log("error whene update the product", error)
+            });
+        }
 
 
     }

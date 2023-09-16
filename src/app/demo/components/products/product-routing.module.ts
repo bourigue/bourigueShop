@@ -4,8 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
     {
-     path:'productManagement',
-      loadChildren:()=>import('./products-management/products-management.module').then(m=>m.ProductsManagementModule)
+        path: 'productManagement',
+        loadChildren: () => import('./products-management/products-management.module').then(m => m.ProductsManagementModule)
     }
 ];
 

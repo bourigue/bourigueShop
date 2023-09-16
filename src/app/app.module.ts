@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import { AppLayoutModule } from './layout/app.layout.module';
+import {NgModule} from '@angular/core';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
+import {AppComponent} from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppLayoutModule} from './layout/app.layout.module';
 import {AngularFireModule} from "@angular/fire/compat";
-
+import {CalendarModule} from 'primeng/calendar';
+import {CardModule} from 'primeng/card';
 import {MenuModule} from "primeng/menu";
- // Make sure this path is correct
-import { LottieModule } from 'ngx-lottie';
-import player from 'lottie-web';
-import { LandingPageComponent } from './demo/components/landing-page/landing-page.component';
+// Make sure this path is correct
+
+import {LandingPageComponent} from './demo/components/landing-page/landing-page.component';
 import {RippleModule} from "primeng/ripple";
 import {StyleClassModule} from "primeng/styleclass";
 import {DividerModule} from "primeng/divider";
@@ -19,14 +19,15 @@ import {DropdownModule} from "primeng/dropdown";
 import {FormsModule} from "@angular/forms";
 import {RatingModule} from "primeng/rating";
 import {ChipsModule} from "primeng/chips";
-export function playerFactory() {
-    return player;
-}
+import {ProductDetailsComponent} from './demo/components/product-details/product-details.component';
+
 // @ts-ignore
 @NgModule({
     declarations: [
         AppComponent,
         LandingPageComponent,
+        ProductDetailsComponent
+
 
     ],
     imports: [
@@ -42,7 +43,7 @@ export function playerFactory() {
             measurementId: "G-X6R047FQ4G"
         }),
         MenuModule,
-        LottieModule.forRoot({player: playerFactory}),
+        // LottieModule.forRoot({player: playerFactory}),
         RippleModule,
         StyleClassModule,
         DividerModule,
@@ -52,13 +53,16 @@ export function playerFactory() {
         FormsModule,
         RatingModule,
         ChipsModule,
+        CalendarModule, // Add this line to import the CalendarModule
+        CardModule
 
     ],
     providers: [
-        { provide: LocationStrategy, useClass: HashLocationStrategy },
+        {provide: LocationStrategy, useClass: HashLocationStrategy},
 
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    schemas: [],
 })
 export class AppModule {
 

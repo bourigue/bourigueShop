@@ -11,16 +11,18 @@ import {MenuItem} from "primeng/api";
 export class AppMenuComponent implements OnInit {
 
     model: any[] = [];
-    visible:boolean|false;
-    constructor(public layoutService: LayoutService,private authSerices:AuthenticationServiceService) { }
+    visible: boolean | false;
     items: MenuItem[] | undefined;
+
+    constructor(public layoutService: LayoutService, private authSerices: AuthenticationServiceService) {
+    }
 
     ngOnInit() {
         this.model = [
             {
                 label: 'Dashboard',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/admin'] },
+                    {label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/admin']},
 
                 ]
             },

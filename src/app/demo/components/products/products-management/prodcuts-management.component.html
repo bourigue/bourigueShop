@@ -1,39 +1,46 @@
 <div class="grid flex align-content-center">
 
-      <div class="col-12" *ngIf="checkInternetConnection(); else offlineMessage">
+    <div *ngIf="checkInternetConnection(); else offlineMessage" class="col-12">
         <p-toast></p-toast>
         <div class="card px-6 py-6">
-            <p-toolbar  styleClass="mb-4" >
+            <p-toolbar styleClass="mb-4">
                 <div class="p-toolbar-group-start">
-                    <p-button label="Add Product" (click)="openNew()"  styleClass="p-button-success mr-2" icon="pi  pi-plus" />
-                    <p-button label="Delete All"  (click)="confirmDeleteSelectedProducts()" styleClass="p-button-danger " icon="pi pi-trash"/>
+                    <p-button (click)="openNew()" icon="pi  pi-plus" label="Add Product"
+                              styleClass="p-button-success mr-2"></p-button>
+                    <p-button (click)="confirmDeleteSelectedProducts()" icon="pi pi-trash" label="Delete All"
+                              styleClass="p-button-danger "></p-button>
                 </div>
                 <div class="p-toolbar-group-end">
-                    <p-button label="Import"      styleClass="p-button-info mr-2" icon="pi pi-plus"/>
-                    <p-button label="Export"  (click)="dt.exportCSV()"    styleClass="p-button-warning"   icon="pi pi-upload"/>
+                    <p-button icon="pi pi-plus" label="Import" styleClass="p-button-info mr-2"></p-button>
+                    <p-button (click)="dt.exportCSV()" icon="pi pi-upload" label="Export"
+                              styleClass="p-button-warning"></p-button>
                 </div>
             </p-toolbar>
             <p-table
                 #dt
-                [value]="products" [tableStyle]="{ 'min-width': '50rem' }"
-                [rowHover]="true"
-                [paginator]="true"
-                [rows]="10"
-                [(selection)]="selectedProducts"
-                [rowsPerPageOptions]="[10,20,30]"
-                [showCurrentPageReport]="true"
-                responsiveLayout="scroll"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [globalFilterFields]="['name','country.name','representative.name']"
+                [(selection)]="selectedProducts" [globalFilterFields]="['name','country.name','representative.name']"
                 [loading]="loading"
+                [paginator]="true"
+                [rowHover]="true"
+                [rowsPerPageOptions]="[10,20,30]"
+                [rows]="10"
+                [showCurrentPageReport]="true"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                [value]="products"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                responsiveLayout="scroll"
             >
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th pSortableColumn="code">Code<p-sortIcon field="code"></p-sortIcon></th>
-                        <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="code">Code
+                            <p-sortIcon field="code"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="name">Name
+                            <p-sortIcon field="name"></p-sortIcon>
+                        </th>
                         <th>Image</th>
                         <th pSortableColumn="category">Category<p-sortIcon field="category"></p-sortIcon></th>
                         <th pSortableColumn="price">Price<p-sortIcon field="price"></p-sortIcon></th>
@@ -47,14 +54,16 @@
 
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText (input)="onGlobalFilter(dt, $event)"  type="text"  placeholder="Search..."  class="w-full sm:w-auto"/>
+                            <input (input)="onGlobalFilter(dt, $event)" class="w-full sm:w-auto" pInputText
+                                   placeholder="Search..." type="text"/>
                         </span>
                     </div>
                 </ng-template>
-                <ng-template pTemplate="body" let-product>
-                    <tr><td>
-                        <p-tableCheckbox [value]="product"></p-tableCheckbox>
-                    </td>
+                <ng-template let-product pTemplate="body">
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                        </td>
 
                         <td style="width:14%; min-width:10rem;">
 
@@ -67,9 +76,8 @@
                         </td>
 
 
-
                         <td style="width:14%; min-width:10rem;"><span class="p-column-title">Image</span>
-                            <img [src]="product.image" [alt]="product.name" width="100" class="shadow-4" />
+                            <img [alt]="product.name" [src]="product.image" class="shadow-4" width="100"/>
 
                         </td>
                         <td style="width:14%; min-width:10rem;">
@@ -84,8 +92,10 @@
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product)"  ></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="confirmDeleteProduct(product)">
+                                <button (click)="editProduct(product)" class="p-button-rounded p-button-success mr-2"
+                                        icon="pi pi-pencil" pButton pRipple></button>
+                                <button (click)="confirmDeleteProduct(product)"
+                                        class="p-button-rounded p-button-warning" icon="pi pi-trash" pButton pRipple>
                                 </button>
                             </div>
                         </td>
@@ -93,76 +103,95 @@
                 </ng-template>
 
                 <ng-template pTemplate="loadingbody">
-                  <ng-container *ngFor="let _ of [1, 2, 3, 4]">
-                    <tr>
-                        <td><p-skeleton height="2rem" styleClass="mb-2"></p-skeleton></td>
-                        <td><p-skeleton height="2rem" styleClass="mb-2"></p-skeleton></td>
-                        <td><p-skeleton height="2rem" styleClass="mb-2"></p-skeleton></td>
-                        <td><p-skeleton height="2rem" styleClass="mb-2"></p-skeleton></td>
-                        <td><p-skeleton height="2rem" styleClass="mb-2"></p-skeleton></td>
-                        <td><p-skeleton height="2rem" styleClass="mb-2"></p-skeleton></td>
-                        <div class="flex">
-                        <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
-                        <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
-                        </div>
-                    </tr>
-                  </ng-container>
+                    <ng-container *ngFor="let _ of [1, 2, 3, 4]">
+                        <tr>
+                            <td><p-skeleton height="2rem" styleClass="mb-2"></p-skeleton></td>
+                            <td><p-skeleton height="2rem" styleClass="mb-2"></p-skeleton></td>
+                            <td><p-skeleton height="2rem" styleClass="mb-2"></p-skeleton></td>
+                            <td><p-skeleton height="2rem" styleClass="mb-2"></p-skeleton></td>
+                            <td><p-skeleton height="2rem" styleClass="mb-2"></p-skeleton></td>
+                            <td><p-skeleton height="2rem" styleClass="mb-2"></p-skeleton></td>
+                            <div class="flex">
+                                <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
+                                <p-skeleton shape="circle" size="3rem" styleClass="mr-2"></p-skeleton>
+                            </div>
+                        </tr>
+                    </ng-container>
                 </ng-template>
             </p-table>
 
-            <p-dialog [(visible)]="productDialog"  class="p-fluid"  [style]="{width: '500px'}" header="Details Product" [modal]="true" >
+            <p-dialog [(visible)]="productDialog" [modal]="true" [style]="{width: '500px'}" class="p-fluid"
+                      header="Details Product">
 
 
                 <ng-template pTemplate="content">
-                  <div class="field " *ngIf="product.image">
-                  <img [src]=" product.image" [alt]="product.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="product.image">
-                  </div>
-                  <div class="field  ">
-                      <label for="name">Name</label>
-                      <input type="text" pInputText id="name" class="w-full"  [(ngModel)]="product.name" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
-                      <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">Name is required.</small>
-                  </div>
+                    <div *ngIf="product.image" class="field ">
+                        <img *ngIf="product.image" [alt]="product.image" [src]=" product.image"
+                             class="mt-0 mx-auto mb-5 block shadow-2" width="150">
+                    </div>
+                    <div class="field  ">
+                        <label for="name">Name</label>
+                        <input [(ngModel)]="product.name"
+                               [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}" autofocus class="w-full"
+                               id="name" pInputText required type="text"/>
+                        <small *ngIf="submitted && !product.name" class="ng-dirty ng-invalid">Name is required.</small>
+                    </div>
                     <div class="field">
                         <label for="description">Description</label>
-                        <input type="text" pInputText id="description" class="w-full"  [(ngModel)]="product.description" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.description}"/>
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.description">Description is required.</small>
+                        <input [(ngModel)]="product.description"
+                               [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.description}" autofocus
+                               class="w-full" id="description" pInputText required type="text"/>
+                        <small *ngIf="submitted && !product.description" class="ng-dirty ng-invalid">Description is
+                            required.</small>
                     </div>
-                  <div class="grid">
-                  <div class="field col-6 ">
-                      <label for="price">Category</label>
-                      <p-dropdown [panelStyleClass]="'dropdown-panel-top'" [options]="categorys" [(ngModel)]="product.category" optionValue="name" optionLabel="name">
+                    <div class="grid">
+                        <div class="field col-6 ">
+                            <label for="price">Category</label>
+                            <p-dropdown [(ngModel)]="product.category" [options]="categorys"
+                                        [panelStyleClass]="'dropdown-panel-top'" optionLabel="name" optionValue="name">
 
-                          <ng-template pTemplate="selectedItem">
-                              <span *ngIf="product && product.category" [class]="'product-badge' + product.category.toString().toLowerCase()">{{product.category}}</span>
-                          </ng-template>
-                          <ng-template let-option pTemplate="item">
-                              <span [class]="'product-badge ' + option.name">{{option.name}}</span>
-                          </ng-template>
-                      </p-dropdown>
-                      <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.category">Price is required.</small>
-                  </div>
-                  <div class="field col-6  ">
-                      <label for="price">Price</label>
-                      <p-inputNumber type="text"  id="price" class="w-full"  [(ngModel)]="product.price" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.price}"/>
-                      <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.price">Price is required.</small>
-                  </div>
-                  </div>
-                  <div class="field  ">
-                      <label for="quantity">Quantity</label>
-                      <input type="text" pInputText id="quantity" class="w-full"  [(ngModel)]="product.quantity" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.quantity}"/>
-                      <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.quantity">Quantity is required.</small>
-                  </div>
-                  <div class="field" *ngIf="!product.image" >
-                      <label >Image</label>
-                      <p-fileUpload class="w-full" [multiple]="false"  customUpload="true" (uploadHandler)="uploadImage($event)" ></p-fileUpload>
-                  </div>
+                                <ng-template pTemplate="selectedItem">
+                                    <span *ngIf="product && product.category"
+                                          [class]="'product-badge' + product.category.toString().toLowerCase()">{{product.category}}</span>
+                                </ng-template>
+                                <ng-template let-option pTemplate="item">
+                                    <span [class]="'product-badge ' + option.name">{{option.name}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                            <small *ngIf="submitted && !product.category" class="ng-dirty ng-invalid">Price is
+                                required.</small>
+                        </div>
+                        <div class="field col-6  ">
+                            <label for="price">Price</label>
+                            <p-inputNumber [(ngModel)]="product.price"
+                                           [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.price}" autofocus
+                                           class="w-full" id="price" required type="text"/>
+                            <small *ngIf="submitted && !product.price" class="ng-dirty ng-invalid">Price is
+                                required.</small>
+                        </div>
+                    </div>
+                    <div class="field  ">
+                        <label for="quantity">Quantity</label>
+                        <input [(ngModel)]="product.quantity"
+                               [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.quantity}" autofocus
+                               class="w-full" id="quantity" pInputText required type="text"/>
+                        <small *ngIf="submitted && !product.quantity" class="ng-dirty ng-invalid">Quantity is
+                            required.</small>
+                    </div>
+                    <div *ngIf="!product.image" class="field">
+                        <label>Image</label>
+                        <p-fileUpload (uploadHandler)="uploadImage($event)" [multiple]="false" class="w-full"
+                                      customUpload="true"></p-fileUpload>
+                    </div>
 
 
-                  </ng-template>
+                </ng-template>
 
                 <ng-template pTemplate="footer">
-                    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()" ></button>
+                    <button (click)="hideDialog()" class="p-button-text" icon="pi pi-times" label="Cancel" pButton
+                            pRipple></button>
+                    <button (click)="saveProduct()" class="p-button-text" icon="pi pi-check" label="Save" pButton
+                            pRipple></button>
                 </ng-template>
 
             </p-dialog>
@@ -170,32 +199,38 @@
             <p-dialog [(visible)]="deleteProdateDialog" header="Confirmation" modal="true" >
                 <div class="flex justufy-content-end align-content-end">
 
-                <div class="flex align-items-center justify-content-center">
+                    <div class="flex align-items-center justify-content-center">
                         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                         <span *ngIf="product">Are you sure you want to delete <b>{{product.name}}</b>?</span>
                     </div>
                 </div>
                 <div class="flex justify-content-end align-content-end pt-6" styleClass="w-2rem 2-4rem">
                     <div class="">
-                      <button pButton *ngIf="!isProgress" label="No"  icon="pi pi-times" class="p-button-text" (click)="deleteProdateDialog=false"></button>
+                        <button (click)="deleteProdateDialog=false" *ngIf="!isProgress" class="p-button-text"
+                                icon="pi pi-times" label="No" pButton></button>
                     </div>
                     <div class="">
-                    <button pButton *ngIf="!isProgress"  label="Yes" icon="pi pi-check" class="p-button-text" (click)="deleteProduct()" >
-                    </button>
-                        <p-progressSpinner  *ngIf="isProgress" styleClass="w-3rem h-3rem"  strokeWidth="3" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+                        <button (click)="deleteProduct()" *ngIf="!isProgress" class="p-button-text" icon="pi pi-check"
+                                label="Yes" pButton>
+                        </button>
+                        <p-progressSpinner *ngIf="isProgress" animationDuration=".5s" fill="var(--surface-ground)"
+                                           strokeWidth="3" styleClass="w-3rem h-3rem"></p-progressSpinner>
                     </div>
                 </div>
 
             </p-dialog>
 
-            <p-dialog [(visible)]="deleteSelecteProductConfirm" modal="true" header="Confirm" >
-               <ng-template pTemplate="content">
-                   Are you want to delete all product selected
-               </ng-template>
+            <p-dialog [(visible)]="deleteSelecteProductConfirm" header="Confirm" modal="true">
+                <ng-template pTemplate="content">
+                    Are you want to delete all product selected
+                </ng-template>
                 <ng-template pTemplate="footer">
-                    <button pButton label="Non" class="p-button-text" (click)="cancelConfirmDeleteSelectedProducts()"></button>
-                    <button pButton *ngIf="!isProgress"  label="Yes" class="p-button-text" (click)="deleteAllSelectedProdcut()"></button>
-                    <p-progressSpinner  *ngIf="isProgress" styleClass="w-3rem h-3rem"  strokeWidth="3" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+                    <button (click)="cancelConfirmDeleteSelectedProducts()" class="p-button-text" label="Non"
+                            pButton></button>
+                    <button (click)="deleteAllSelectedProdcut()" *ngIf="!isProgress" class="p-button-text" label="Yes"
+                            pButton></button>
+                    <p-progressSpinner *ngIf="isProgress" animationDuration=".5s" fill="var(--surface-ground)"
+                                       strokeWidth="3" styleClass="w-3rem h-3rem"></p-progressSpinner>
 
                 </ng-template>
             </p-dialog>
@@ -206,10 +241,10 @@
             <div class="card">
                 <div class="flex justify-content-center flex-wrap card-container yellow-container">
                     <div class="flex align-items-center justify-content-center " style="min-height:530px">
-                        <ng-lottie width="100%" height="400px" [options]="lottieOptions"></ng-lottie>
+                        <!-- <ng-lottie width="100%" height="400px" [options]="lottieOptions"></ng-lottie>-->
                     </div>
                 </div>
-        </div>
+            </div>
 </div>
     </ng-template>
 </div>
