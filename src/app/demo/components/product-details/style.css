@@ -1,0 +1,35 @@
+.bold {
+    font-weight: bold;
+}
+
+.container{
+  position: relative;
+
+  width: 100%;
+  background-color: rgb(214, 243, 247);
+
+}
+
+.container::before{
+    content: "";
+    position:absolute;
+    top:5%;
+    left:5%;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(255,34,194,1) 0%, rgba(0,212,255,1) 100%);
+  }
+
+.container .box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    z-index: 10;
+   
+   
+  }
+ 

@@ -1,0 +1,95 @@
+
+
+<div class="surface-0 flex justify-content-center">
+    <div class="landing-wrapper overflow-hidden w-full" id="home">
+
+       <div style="background: linear-gradient(0deg, rgb(255, 151, 162),rgb(255, 151, 162)), radial-gradient(77.36% 256.97% at 77.36% 57.52%, #EEEFAF 0%, #C3E3FA 100%); clip-path: ellipse(150% 87% at 93% 13%);background-image: url('assets/demo/images/landing/homeBackground.jpg');
+                            background-repeat: no-repeat;
+                            background-position: right;
+                            background-size: cover;
+                            min-height: 100vh;">
+            <div class="flex  align-content-start flex-wrap card-container purple-container" style="min-height:100vh ">
+                        <div class="m-7 p-7  font-bold text-white border-round m-2">
+
+                        </div>
+            </div>
+        </div>
+
+        <section>
+            <div class="grid">
+                <div class="col-12">
+                    <div class="card">
+                        <h5>DataView</h5>
+                        <p-dataView  #dt
+                                     [paginator]="true"
+                                     [rows]="9"
+                                     [sortField]="sortField"
+                                     [sortOrder]="sortOrder"
+                                     [value]="products"
+                                     filterBy="name,price,category"
+                                     layout="grid"
+
+
+                        >
+                            <ng-template             pTemplate="header">
+                                <div class="flex justify-content-between">
+                                    <div class="flex justify-content-between">
+                                        <p-dropdown (onChange)="onSortChange($event)" [options]="sortOptions" name="label" optionValue="value"></p-dropdown >
+                                        <p-dropdown (onChange)="onCategoryChange($event)" [optionValue]="selectedCategory" [options]="sortCategoryOptions" name="label"></p-dropdown >
+
+                                    </div>
+                                    <div class="flex flex-column md:flex-row md:justify-contesurface-hovernt-between gap-2">
+                                        <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template let-product pTemplate="listItem">
+                                <div class="col-12">
+                                    <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
+                                        <img [alt]="product.name" [src]="product.image" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5"/>
+                                        <div class="flex-1 flex flex-column align-items-center text-center md:text-left">
+                                            <div class="font-bold text-2xl">{{product.name}}</div>
+                                            <div class="mb-2">{{product.description}}</div>
+                                            <div class="flex align-items-center mt-2">
+                                                <i class="pi pi-tag mr-2"></i>
+                                                <span class="font-semibold">{{product.category}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
+                                            <span class="text-2xl font-semibold mb-2 align-self-center md:align-self-end">${{product.price}}</span>
+                                            <p-button (click)="navigateToProductDetails(product.id)" [disabled]="product.inventoryStatus === 'OUTOFSTOCK'" icon="pi pi-shopping-cart" label="Add to Cart" styleClass="mb-2 p-button-sm"></p-button>
+                                            <span [class]="'product-badge status-' + product.category.toLowerCase()">{{product.category}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template let-product pTemplate="gridItem">
+                                <div class="col-12 md:col-4">
+                                    <div class="card m-3 border-1 surface-border">
+                                        <div class="mb-2 bg-danger">
+                                            <div class="flex align-items-center">
+                                                <i class="pi pi-tag mr-2"></i>
+                                                <span class="font-semibold">{{product.category}}</span>
+                                            </div>
+                                            <span [class]="'product-badge status-' + product.category.toLowerCase()">{{product.inventoryStatus}}</span>
+                                        </div>
+                                        <div class="flex flex-column align-items-center text-center mb-3">
+                                            <img [alt]="product.name" [src]="product.image" class="w-9 shadow-2 my-3 mx-0 " />
+                                            <div class="text-2xl font-bold">{{product.name}}</div>
+                                            <div class="mb-3">{{product.description}}</div>
+                                        </div>
+                                        <div class="flex align-items-center justify-content-between">
+                                            <span class="text-2xl font-semibold">{{product.price}} DH</span>
+                                            <p-button (click)="navigateToProductDetails(product.id)" class="" icon="pi pi-shopping-cart" ></p-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+
+                        </p-dataView>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

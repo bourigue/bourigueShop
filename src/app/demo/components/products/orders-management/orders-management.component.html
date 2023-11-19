@@ -1,0 +1,69 @@
+
+<div class="grid flex align-content-center">
+    <div class="card px-6 py-6 w-full">
+        <div >
+            <p-toolbar>
+               <div class="p-toolbar-group-start">
+                  <p-button  icon="pi  pi-plus" label="Add Product"
+                   styleClass="p-button-success mr-2"></p-button>
+                   <p-button  icon="pi  pi-plus" label="Add Product"
+                   styleClass="p-button-success mr-2"></p-button>
+            </div>
+
+            
+            </p-toolbar>
+            <p-table
+            [value]="orders"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [loading]="loading"
+            responsiveLayout="stack"
+            styleClass="min-h-screen"
+            paginator="true"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            
+            >
+                <ng-template  pTemplate="header" >
+                  <tr>   
+                      <th pSortableColumn="dateCreation">Date Commande<p-sortIcon field="code"></p-sortIcon></th>   
+                      <th pSortableColumn="Quantity">Quantity<p-sortIcon field="Quantity"></p-sortIcon></th>
+                      <th >Product</th>
+                      <th pSortableColumn="name">Product Title<p-sortIcon field="name"></p-sortIcon></th>
+                      <th pSortableColumn="firstname">first name<p-sortIcon field="firstname"></p-sortIcon></th>
+                      <th pSortableColumn="lastname">last name<p-sortIcon field="lastname"></p-sortIcon></th>
+                      <th>addresse</th>
+                      <th>phone number</th>
+                      <th>Status</th>
+                      <th>Is In Stock</th>
+                  </tr>  
+                </ng-template>
+                <ng-template  pTemplate="body" let-order let-columns="columns">
+                   <tr>
+                       <td>{{ order.dateCreation | date : 'medium' }} </td> 
+                       <td><p-badge [value]="order.Quantity" size="large" severity="warning" ></p-badge></td>
+                       <td style="width:14%; min-width:10rem;">
+                        <img  [src]="order.product.image" class="shadow-4" width="100"></td>
+                       <td>{{ order.product.name }}</td>
+                       <td>{{ order.firstname }}</td>
+                       <td>{{ order.lastname }}</td>
+                       <td>{{ order.address }}</td>
+                       <td>{{ order.phoneNumber }}</td>
+                       <td  >
+                        
+                        <p-dropdown   appendTo="body"  clas="p-badge"  [options]="statusType" [(ngModel)]="order.Status" (onChange)="updateStatus(order,$event)">
+                                
+                        </p-dropdown>
+                       </td>
+                       <td><p-tag size="large"  [rounded]="true"  severity="success" ><p class="p-0 m-0 text-lg">On Stock</p></p-tag>
+                       </td>
+
+                   </tr>
+                </ng-template>
+
+            </p-table>
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,91 @@
+ 
+    
+            <div class="container min-h-screen flex grid justify-content-between align-items-center">
+              <div class="flex col-12 md:col-6 justify-content-center align-items-center"> 
+                   <p-toast></p-toast>
+                   <div class="box overflow-hidden ">
+                      <lib-ngx-image-zoom 
+                        [thumbImage]=myThumbnail
+                        [fullImage]=myFullresImage
+                        [magnification]="2"
+                        [enableScrollZoom]="true"
+                        [enableLens]="true"
+                        [lensWidth]="200"
+                        [lensHeight]="200">
+                      </lib-ngx-image-zoom>
+                    
+                    </div> 
+                    </div>
+                  <div class="flex  col-12   md:col-6 justify-content-center align-items-center">
+                      <div class="flex flex-column">
+                       <div class="pt-2 justify-content-start">
+                           <h3 class="p-card-title " >{{product.name}}</h3>
+                           <h3 class="p-card-title ">{{product.category}}</h3>
+                           <p class="p-text-secondary">{{product.description}}</p>
+                           <div class="flex">
+                               <div class="flex justify-content-center">
+                                   <h6 class="line-through bold m-3 p-card-title text-red-400 " style="font-weight: bold;">{{product.price}} DH</h6>
+                               </div>
+                               <div class="flex justify-content-center">
+                                   <p-tag severity="success"  [rounded]="true">
+                                       <h3  class="line-through- m-3 p-card-title text-white p-button-danger ">{{product.price}} DH</h3>
+                                   </p-tag>
+                               </div>
+          
+                           </div>
+                       </div>
+                       <div class="mt-3 pt-2 flex justify-content-center ">
+                          <div class="flex grid p-2">
+                              <div class=" col-12 md:col-6 flex justify-content-center ">
+                                  <span class="p-float-label w-full ">
+                                     <input [(ngModel)]="order.firstname"  [ngClass]="{'ng-invalid ng-dirty' : isSubmitted && !order.firstname}" autofocus  autofocus  class="w-full" pInputText id="first name"  >
+                                     <label htmlFor="first name">First name</label>
+                                     <small  *ngIf="isSubmitted &&!order.firstname "  class="ng-dirty ng-invalid">First name is required.</small>
+                                  </span>
+                              </div>
+                              <div class=" col-12 md:col-6 flex justify-content-center">
+                                  <span class="p-float-label w-full ">
+                                     <input [(ngModel)]="order.lastname" class="w-full" [ngClass]="{'ng-invalid ng-dirty' : isSubmitted && !order.lastname}" pInputText id="last name"  />
+                                     <label htmlFor="last name">last name</label>
+                                     <small *ngIf="isSubmitted &&!order.lastname  "  >last name is required.</small>
+                                  </span>
+                              </div>
+                              <div class=" col-12 md:col-6 flex justify-content-center">
+                                  <span class="p-float-label w-full">
+                                     <input  [(ngModel)]="order.phoneNumber" [ngClass]="{'ng-invalid ng-dirty' : isSubmitted && !order.phoneNumber}" class="w-full" type="number" pInputText id="Phone number"  />
+                                     <label htmlFor="Phone number">Phone number</label>
+                                     <small *ngIf="isSubmitted && !order.phoneNumber"  class="ng-dirty ng-invalid">Phone number is required.</small>
+                                  </span>
+                              </div>
+                              <div class=" col-12 md:col-6 flex justify-content-center">
+                                  <span class="p-float-label w-full">
+                                     <input  [(ngModel)]="order.address" [ngClass]="{'ng-invalid ng-dirty' : isSubmitted && !order.address}"  class="w-full" pInputText id="Address"  />
+                                     <label htmlFor="Address">Address</label>
+                                     <small *ngIf="isSubmitted &&!order.address"  class="ng-dirty ng-invalid">Address is required.</small>
+                                  </span>
+                              </div>
+                          </div>
+                       </div>
+                       <div class="grid pt-2 flex justify-content-between">
+                              <div class="flex col-12 md:col-6 justify-content-around">
+                                  <div class="flex"><p-button icon="pi pi-plus" (click)="incQt()"></p-button></div>
+                                  <div class="flex justify-content-center align-items-center">
+                                      <p-badge class="m-2" size="large"  [value]="order.Quantity"></p-badge>
+                                  </div>
+                                  <div class="flex"><p-button icon="pi pi-minus" (click)="decQt()"></p-button></div>
+                              </div>
+                              <div class="flex col-12 md:col-6  justify-content-center">
+                                  <div   [ngClass]="buttonState === 'start' ? 'p-slide-left' : 'p-slide-right'"
+                                  (click)="sendOrder()" class="move-button p-animated p-button  flex text-white w-full justify-content-center align-items-center  bg-green-500">
+                                   Acheter
+                                  </div>
+                              </div>
+                          </div>
+          
+                      </div>
+                  </div>
+          
+              </div>
+        
+          
+    
